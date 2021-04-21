@@ -1,6 +1,7 @@
 # Problem-Solving
 
-These are my answer source codes of BOJ problems. 
-(https://www.acmicpc.net)
+These are my answer source codes of algorithm problems
+* BOJ : https://www.acmicpc.net
+* Leet Code : https://leetcode.com
 
 
