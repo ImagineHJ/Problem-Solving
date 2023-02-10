@@ -23,17 +23,17 @@ bool pillar_okay(int x, int y){
     return false;
 }
 
-bool possible(){
-    for(int x=0; x<=num; x++){
-        for(int y=0; y<=num; y++){
-            if(map[x][y] == 1 || map[x][y] == 3 ){ // 기둥
-                if(!pillar_okay(x, y)) return false;
-            }
-            if(map[x][y] == 2 || map[x][y] == 3){ // 보
-                if(!bo_okay(x, y)) return false;
-            }
-        }
-    }
+bool possible1(int x, int y){ // 기둥 삭제 조건
+    if ((map[x][y+1]==1||map[x][y+1]==3)&&!pillar_okay(x, y+1)) return false;
+    if ((map[x][y+1]==2||map[x][y+1]==3)&&!bo_okay(x, y+1)) return false;
+    if (x>0&&(map[x-1][y+1]==2||map[x-1][y+1]==3)&&!bo_okay(x-1, y+1)) return false;
+    return true;
+}
+bool possible2(int x, int y){ // 보 삭제 조건
+    if ((map[x][y]==1||map[x][y]==3)&&!pillar_okay(x, y)) return false;
+    if ((map[x+1][y]==1||map[x+1][y]==3)&&!pillar_okay(x+1, y)) return false;
+    if ((map[x+1][y]==2||map[x+1][y]==3)&&!bo_okay(x+1, y)) return false;
+    if (x>0&&(map[x-1][y]==2||map[x-1][y]==3)&&!bo_okay(x-1, y)) return false;
     return true;
 }
 
@@ -41,7 +41,7 @@ void build(int x, int y, int a, int b){
     if(a==0){ // 기둥
         if(b==0){ // 삭제
             map[x][y] -= 1;
-            if(!possible()){
+            if(!possible1(x, y)){
                 map[x][y] += 1; // 삭제 실패
             }
         }
@@ -52,7 +52,7 @@ void build(int x, int y, int a, int b){
     else{ // 보
         if(b==0){ // 삭제
             map[x][y] -= 2;
-            if(!possible()){ 
+            if(!possible2(x, y)){ 
                 map[x][y] += 2; // 삭제 실패
             }
         }
