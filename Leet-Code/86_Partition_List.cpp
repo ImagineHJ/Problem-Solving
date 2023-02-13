@@ -8,6 +8,8 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+
+// Solution 1
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
@@ -42,5 +44,45 @@ public:
             p = temp;
         }
         return head;
+    }
+};
+
+// Solution 2
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode *first_head=NULL, *first_end=NULL, *second_head=NULL, *second_end=NULL, *p, *temp;
+
+        p = head;
+        if(p == NULL) return head;
+        while(p!=NULL){
+            cout<<p->val<<endl;
+            temp = p->next;
+            p->next = NULL;
+            if(p->val<x){
+                if(first_head==NULL) {
+                    first_head = p;
+                    first_end = p;
+                }
+                else{
+                    first_end->next = p;
+                    first_end = p;
+                }
+            }
+            else{
+                if(second_head==NULL) {
+                    second_head = p;
+                    second_end = p;
+                }
+                else{
+                    second_end->next = p;
+                    second_end = p;
+                }
+            }
+            p = temp;
+        }
+        if(first_head==NULL) return second_head;
+        first_end->next = second_head;
+        return first_head;
     }
 };
