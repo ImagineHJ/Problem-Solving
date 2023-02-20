@@ -1,5 +1,5 @@
 
-// 1. make a list using pre order and check if the list is in ascending order
+// 1. make a list using in-order travesal and check if the list is in ascending order
 class Solution {
     public:
         int prev; // can save previous val instead of saving all values using list
@@ -19,7 +19,7 @@ class Solution {
     }
 };
 
-// 2. using post order recursion to get min, max value -> validate
+// 2. using post-order traversal to get min, max value of child tree -> validate if it its binary search tree
 class Solution {
     public:
         bool ans = true;
