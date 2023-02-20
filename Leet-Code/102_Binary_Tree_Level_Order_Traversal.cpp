@@ -55,3 +55,29 @@ public:
         return ans;
     }
 };
+
+
+// DFS
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void dfs(TreeNode* start, int depth){
+        
+        while(ans.size()<depth+1){
+            ans.push_back(vector<int>()); 
+        }
+
+        ans[depth].push_back(start->val);
+        if(start->left!=NULL){
+            dfs(start->left, depth+1);
+        }
+        if(start->right!=NULL){
+            dfs(start->right, depth+1);
+        }
+    }
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        if(root==NULL) return ans;
+        dfs(root, 0);
+        return ans;
+    }
+};
