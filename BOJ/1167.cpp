@@ -1,71 +1,60 @@
 #include <iostream>
 #include <vector>
-#define MAX 100000
-
+#include <unordered_map>
+#include <algorithm>
+#include <queue>
+#define INF 1e9
 using namespace std;
-long long ans=0;
-
-struct child{
-    int name;
-    int length;
+struct edge{
+    int node;
+    int cost;
 };
 
-vector<child> children[MAX+1];
+vector<edge> edges[100001];
+bool visited[100001];
+long long ans = 0;
 
-long long max_length(int root){
-    long long max=0;
+long long farthest_child_from_root(int root, int parent){
+    long long res = 0, max1=0, max2=0; // get two maximum cost
+    edge now;
     
-    for(int i=0; i<children[root].size(); i++){
-        long long num=max_length(children[root][i].name)+children[root][i].length;
-        if(num>max) max=num;
+    for(int i=0; i<edges[root].size(); i++){
+        now = edges[root][i];
+        if(now.node == parent) continue; // parent already visited
+        res = farthest_child_from_root(now.node, root)+now.cost;
+        if(res>max1){
+            max2 = max1;
+            max1 = res;
+        }
+        else if(res>max2){
+            max2 = res;
+        }
     }
-    return max;
-}
-
-long long diameter(int root){
-    long long max=0, second=0;
+    ans = max(ans, max1+max2); // get maximum diameter
     
-    for(int i=0; i<children[root].size(); i++){
-        long long num=max_length(children[root][i].name)+children[root][i].length;
-        if(num>max) {second=max; max=num;}
-        else if(num>second) second=num;
-    }
-    return max+second;
-}
-
-void preorder(int root){
-    long long num=diameter(root);
-    if(num>ans) ans=num;
-    for(int i=0; i<children[root].size(); i++)
-        preorder(children[root][i].name);
+    return max1;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL); //faster
     
-    int n; cin>>n;
-    int visited[MAX+1]={0, };
+    edge e;
     
-    for(int i=0; i<n; i++){
-        int p; cin>>p;
-        visited[p]=1;
-        
-        int c; cin>>c;
-        while(c!=-1){
-            int l; cin>>l;
-            
-            if(visited[c]==0){
-                child ch; ch.name=c; ch.length=l;
-                children[p].push_back(ch);
-            }
+    int v, a, b, c;
+    cin>>v;
+    for(int i=0; i<v; i++){
+        cin>>a>>b;
+        while(b!=-1){
             cin>>c;
+            e.node = b; e.cost = c;
+            edges[a].push_back(e);
+            cin>>b;
         }
     }
-    
-    preorder(1);
-    
+    farthest_child_from_root(a, a);
     cout<<ans;
     
     return 0;
 }
+
